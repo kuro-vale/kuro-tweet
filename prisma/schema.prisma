@@ -11,6 +11,6 @@ model User {
     id        Int       @id @default(autoincrement())
     username  String    @unique
     password  String
-    joined    DateTime
+    joined    DateTime  @default(now())
     deleted   DateTime?
 }

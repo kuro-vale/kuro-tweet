@@ -5,5 +5,8 @@ export const Resolvers = {
   Query: {
     "users": UserResolver.query,
   },
+  Mutation: {
+    "register": UserResolver.register,
+  },
   Date: DateScalar,
 };

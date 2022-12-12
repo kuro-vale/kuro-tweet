@@ -11,4 +11,8 @@ type User {
 type Query {
     users: [User]
 }
+
+type Mutation {
+    register(username: String, password: String): User
+}
 `;
