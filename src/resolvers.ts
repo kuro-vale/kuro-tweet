@@ -1,8 +1,9 @@
 import { DateScalar } from "./scalars/date.scalar.js";
+import { UserResolver } from "./user/user.resolver.js";
 
 export const Resolvers = {
   Query: {
-    "users": async (_: any, __: any, { db }: any) => await db.user.findMany(),
+    "users": UserResolver.query,
   },
   Date: DateScalar,
 };
