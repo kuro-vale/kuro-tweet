@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@apollo/server": "^4.2.2",
+    "@prisma/client": "^4.7.1",
     "graphql": "^16.6.0"
   },
   "devDependencies": {
