@@ -7,6 +7,7 @@ export const Resolvers = {
   },
   Mutation: {
     "register": UserResolver.register,
+    "login": UserResolver.login,
   },
   Date: DateScalar,
 };

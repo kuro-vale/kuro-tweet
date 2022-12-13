@@ -34,4 +34,22 @@ export class UserResolver {
       throw new GraphQLError("Something bad happen, please try again.");
     }
   }
+
+  static async login(_: any, args: any, { db }: any) {
+    const { username, password } = args;
+    const user = await db.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    if (user != null) {
+      if (await bcrypt.compare(password, user.password)) {
+        return {
+          token: JwtGenerator(user.id, username),
+          user: user,
+        };
+      }
+    }
+    throw new GraphQLError("Invalid Credentials");
+  }
 }
