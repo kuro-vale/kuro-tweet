@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql/error/index.js";
+import { UserValidator } from "./user.validator.js";
 
 export class UserResolver {
   static async query(_: any, __: any, { db }: any) {
@@ -8,6 +9,7 @@ export class UserResolver {
 
   static async register(_: any, args: any, { db }: any) {
     const { username, password } = args;
+    await UserValidator(username, password);
     try {
       return await db.user.create({
         data: {

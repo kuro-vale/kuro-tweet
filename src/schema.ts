@@ -13,6 +13,6 @@ type Query {
 }
 
 type Mutation {
-    register(username: String, password: String): User
+    register(username: String!, password: String!): User
 }
 `;
