@@ -13,10 +13,12 @@
   "dependencies": {
     "@apollo/server": "^4.2.2",
     "@prisma/client": "^4.7.1",
+    "bcrypt": "^5.1.0",
     "graphql": "^16.6.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^18.11.13",
     "prisma": "^4.7.1",
     "ts-node": "^10.9.1",
