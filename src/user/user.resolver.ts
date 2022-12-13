@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql/error/index.js";
 import { UserValidator } from "./user.validator.js";
 import * as bcrypt from "bcrypt";
+import { JwtGenerator } from "../jwt/jwt-generator.js";
 
 export class UserResolver {
   static async query(_: any, __: any, { db }: any) {
@@ -14,12 +15,16 @@ export class UserResolver {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password, salt);
     try {
-      return await db.user.create({
+      const user = await db.user.create({
         data: {
           username: username,
           password: hash,
         },
       });
+      return {
+        token: JwtGenerator(user.id, username),
+        user: user,
+      };
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code == "P2002") {
