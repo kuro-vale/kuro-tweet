@@ -13,9 +13,13 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
-  context: async () => ({
-    db: prisma,
-  }),
+  context: async ({ req }) => {
+    const token = req.headers.authorization || "";
+    return {
+      db: prisma,
+      token: token,
+    };
+  },
 });
 
 console.log(`🚀  Server ready at: ${url}`);

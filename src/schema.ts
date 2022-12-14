@@ -13,6 +13,7 @@ type AuthPayload {
 }
 
 type Query {
+    profile: User
     users: [User]
 }
 

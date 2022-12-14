@@ -3,6 +3,7 @@ import { GraphQLError } from "graphql/error/index.js";
 import { UserValidator } from "./user.validator.js";
 import * as bcrypt from "bcrypt";
 import { JwtGenerator } from "../jwt/jwt-generator.js";
+import { JwtValidator } from "../jwt/jwt-validator.js";
 
 export class UserResolver {
   static async query(_: any, __: any, { db }: any) {
@@ -31,6 +32,7 @@ export class UserResolver {
           throw new GraphQLError("Username already taken");
         }
       }
+      console.error(e);
       throw new GraphQLError("Something bad happen, please try again.");
     }
   }
@@ -51,5 +53,12 @@ export class UserResolver {
       }
     }
     throw new GraphQLError("Invalid Credentials");
+  }
+
+  static async profile(_: any, __: any, { db, token }: any) {
+    if (token != "") {
+      return await JwtValidator(token, db);
+    }
+    throw new GraphQLError("Unauthenticated: You have to login to do this.");
   }
 }

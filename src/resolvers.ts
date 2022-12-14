@@ -3,6 +3,7 @@ import { UserResolver } from "./user/user.resolver.js";
 
 export const Resolvers = {
   Query: {
+    "profile": UserResolver.profile,
     "users": UserResolver.query,
   },
   Mutation: {
