@@ -7,9 +7,12 @@ export const Resolvers = {
     "users": UserResolver.query,
   },
   Mutation: {
+    "Auth": () => "",
+  },
+  Auth: {
     "register": UserResolver.register,
     "login": UserResolver.login,
-    "delete_user": UserResolver.delete,
+    "deleteUser": UserResolver.delete,
   },
   Date: DateScalar,
 };
