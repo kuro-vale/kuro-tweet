@@ -61,4 +61,20 @@ export class UserResolver {
     }
     throw new GraphQLError("Unauthenticated: You have to login to do this.");
   }
+
+  static async delete(_: any, args: any, { db, token }: any) {
+    if (token != "") {
+      const user = await JwtValidator(token, db);
+      await db.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          deleted: new Date(),
+        },
+      });
+      return `${user.username} was deleted`;
+    }
+    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+  }
 }

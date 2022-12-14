@@ -20,5 +20,6 @@ type Query {
 type Mutation {
     register(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
+    delete_user: String
 }
 `;

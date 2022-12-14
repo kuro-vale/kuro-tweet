@@ -9,6 +9,7 @@ export const Resolvers = {
   Mutation: {
     "register": UserResolver.register,
     "login": UserResolver.login,
+    "delete_user": UserResolver.delete,
   },
   Date: DateScalar,
 };
