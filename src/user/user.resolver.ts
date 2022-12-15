@@ -10,6 +10,40 @@ export class UserResolver {
     return await db.user.findMany();
   }
 
+  static async query_followers(parent: any, __: any, { db }: any) {
+    const followers = await db.user.findUnique({
+      where: {
+        username: parent.username,
+      },
+    }).followedBy({
+      include: {
+        follower: true,
+      },
+    });
+    let response = [];
+    for (const follower of followers) {
+      response.push(follower.follower);
+    }
+    return response;
+  }
+
+  static async query_following(parent: any, __: any, { db }: any) {
+    const followings = await db.user.findUnique({
+      where: {
+        username: parent.username,
+      },
+    }).following({
+      include: {
+        following: true,
+      },
+    });
+    let response = [];
+    for (const following of followings) {
+      response.push(following.following);
+    }
+    return response;
+  }
+
   static async register(_: any, args: any, { db }: any) {
     const { username, password } = args;
     await UserValidator(username, password);

@@ -35,6 +35,10 @@ type User {
     username: String
     """Date of registration"""
     joined: Date
+    """User that are following this user"""
+    followers: [User]
+    """Users this user is following"""
+    following: [User]
 }
 
 """Authentication payload"""
