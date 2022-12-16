@@ -8,8 +8,21 @@ import { Helper } from "../helper.js";
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
 export class UserResolver {
-  static async query(_: any, __: any, { db }: any) {
-    return await db.user.findMany();
+  static async query(_: any, { page }: any, { db }: any) {
+    if (page == null || page < 1) {
+      page = 1;
+    }
+    const per = 10;
+    const count = await db.user.count();
+    const metadata = Helper.metadataAssembler(count, per, page);
+    const users = await db.user.findMany({
+      skip: (page - 1) * per,
+      take: per,
+    });
+    return {
+      metadata: metadata,
+      data: users,
+    };
   }
 
   static async query_followers(parent: any, __: any, { db }: any) {
@@ -108,8 +121,7 @@ export class UserResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async follow(_: any, args: any, { db, token }: any) {
-    const { followId } = args;
+  static async follow(_: any, { followId }: any, { db, token }: any) {
     if (token != "") {
       const user = await JwtValidator(token, db);
       if (user.id == followId) {
@@ -130,8 +142,7 @@ export class UserResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async unFollow(_: any, args: any, { db, token }: any) {
-    const { unFollowId } = args;
+  static async unFollow(_: any, { unFollowId }: any, { db, token }: any) {
     if (token != "") {
       const user = await JwtValidator(token, db);
       try {

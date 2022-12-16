@@ -5,7 +5,7 @@ type Query {
     """Retrieve logged user"""
     profile: User
     """Retrieve all user"""
-    users: [User]
+    users(page: Int): UserPagination
 }
 
 type Mutation
@@ -57,5 +57,31 @@ type AuthPayload {
     token: String!
     """Your user"""
     user: User!
+}
+
+"""Metadata for pagination"""
+type PaginationMetadata {
+    """Max elements in the page"""
+    per: Int
+    """Total elements"""
+    total: Int
+    """Current page"""
+    current: Int
+    """Previous page"""
+    previous: Int
+    """Next page"""
+    next: Int
+    """First page"""
+    first: Int
+    """Last page"""
+    last: Int
+}
+
+"""Return metadata and users"""
+type UserPagination {
+    """Pagination Metadata"""
+    metadata: PaginationMetadata
+    """All users retrieved"""
+    data: [User]
 }
 `;
