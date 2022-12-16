@@ -5,6 +5,8 @@ import { JwtGenerator } from "../jwt/jwt-generator.js";
 import { JwtValidator } from "../jwt/jwt-validator.js";
 import { UserHelper } from "./user.helper.js";
 
+const LoginMessage = "Unauthenticated: You have to login to do this.";
+
 export class UserResolver {
   static async query(_: any, __: any, { db }: any) {
     return await db.user.findMany();
@@ -87,7 +89,7 @@ export class UserResolver {
     if (token != "") {
       return await JwtValidator(token, db);
     }
-    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+    throw new GraphQLError(LoginMessage);
   }
 
   static async delete(_: any, args: any, { db, token }: any) {
@@ -103,7 +105,7 @@ export class UserResolver {
       });
       return `${user.username} was deleted`;
     }
-    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+    throw new GraphQLError(LoginMessage);
   }
 
   static async follow(_: any, args: any, { db, token }: any) {
@@ -125,7 +127,7 @@ export class UserResolver {
       }
       return "Success";
     }
-    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+    throw new GraphQLError(LoginMessage);
   }
 
   static async unFollow(_: any, args: any, { db, token }: any) {
@@ -146,6 +148,6 @@ export class UserResolver {
       }
       return "Success";
     }
-    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+    throw new GraphQLError(LoginMessage);
   }
 }

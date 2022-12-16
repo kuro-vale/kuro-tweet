@@ -13,6 +13,8 @@ type Mutation
 extend type Mutation {
     """Auth mutations"""
     Auth: Auth
+    """User Mutations"""
+    UserOps: UserOps
 }
 
 """Auth mutations"""
@@ -21,7 +23,11 @@ type Auth {
     register(username: String!, password: String!): AuthPayload
     """Generate a new token"""
     login(username: String!, password: String!): AuthPayload
-    """Delete logged user"""
+}
+
+"""User Mutations"""
+type UserOps {
+    """Delete your user"""
     deleteUser: String
     """Follow a user"""
     follow(followId: Int!): String

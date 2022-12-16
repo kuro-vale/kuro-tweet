@@ -12,10 +12,13 @@ export const Resolvers = {
   },
   Mutation: {
     Auth: () => "",
+    UserOps: () => "",
   },
   Auth: {
     register: UserResolver.register,
     login: UserResolver.login,
+  },
+  UserOps: {
     deleteUser: UserResolver.delete,
     follow: UserResolver.follow,
     unfollow: UserResolver.unFollow,
