@@ -8,16 +8,23 @@ import { Helper } from "../helper.js";
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
 export class UserResolver {
-  static async query(_: any, { page }: any, { db }: any) {
+  static async query(_: any, { page, filter }: any, { db }: any) {
+    filter = {
+      username: {
+        contains: filter.username,
+        mode: "insensitive",
+      },
+    };
     if (page == null || page < 1) {
       page = 1;
     }
     const per = 10;
-    const count = await db.user.count();
+    const count = await db.user.count({ where: filter });
     const metadata = Helper.metadataAssembler(count, per, page);
     const users = await db.user.findMany({
       skip: (page - 1) * per,
       take: per,
+      where: filter,
     });
     return {
       metadata: metadata,

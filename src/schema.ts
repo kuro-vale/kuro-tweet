@@ -5,7 +5,7 @@ type Query {
     """Retrieve logged user"""
     profile: User
     """Retrieve all user"""
-    users(page: Int): UserPagination
+    users(page: Int, filter: FilterUsers): UserPagination
 }
 
 type Mutation
@@ -83,5 +83,9 @@ type UserPagination {
     metadata: PaginationMetadata
     """All users retrieved"""
     data: [User]
+}
+
+input FilterUsers {
+    username: String
 }
 `;
