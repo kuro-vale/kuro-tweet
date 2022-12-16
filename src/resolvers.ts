@@ -17,6 +17,8 @@ export const Resolvers = {
     register: UserResolver.register,
     login: UserResolver.login,
     deleteUser: UserResolver.delete,
+    follow: UserResolver.follow,
+    unfollow: UserResolver.unFollow,
   },
   Date: DateScalar,
 };

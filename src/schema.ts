@@ -23,6 +23,10 @@ type Auth {
     login(username: String!, password: String!): AuthPayload
     """Delete logged user"""
     deleteUser: String
+    """Follow a user"""
+    follow(followId: Int!): String
+    """Unfollow a user"""
+    unfollow(unFollowId: Int!): String
 }
 
 """

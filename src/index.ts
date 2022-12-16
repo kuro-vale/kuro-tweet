@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 const server = new ApolloServer({
   typeDefs: Schema,
   resolvers: Resolvers,
-  validationRules: [depthLimit(3)]
+  validationRules: [depthLimit(3)],
 });
 
 const { url } = await startStandaloneServer(server, {

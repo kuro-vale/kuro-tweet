@@ -1,9 +1,9 @@
-import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql/error/index.js";
 import { UserValidator } from "./user.validator.js";
 import * as bcrypt from "bcrypt";
 import { JwtGenerator } from "../jwt/jwt-generator.js";
 import { JwtValidator } from "../jwt/jwt-validator.js";
+import { UserHelper } from "./user.helper.js";
 
 export class UserResolver {
   static async query(_: any, __: any, { db }: any) {
@@ -61,13 +61,7 @@ export class UserResolver {
         user: user,
       };
     } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code == "P2002") {
-          throw new GraphQLError("Username already taken");
-        }
-      }
-      console.error(e);
-      throw new GraphQLError("Something bad happen, please try again.");
+      UserHelper.catchDBErrors(e, "Username already taken");
     }
   }
 
@@ -108,6 +102,49 @@ export class UserResolver {
         },
       });
       return `${user.username} was deleted`;
+    }
+    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+  }
+
+  static async follow(_: any, args: any, { db, token }: any) {
+    const { followId } = args;
+    if (token != "") {
+      const user = await JwtValidator(token, db);
+      if (user.id == followId) {
+        throw new GraphQLError("Forbidden: You can't follow yourself");
+      }
+      try {
+        await db.follows.create({
+          data: {
+            followerId: user.id,
+            followingId: followId,
+          },
+        });
+      } catch (e) {
+        UserHelper.catchDBErrors(e, "You already follow this person");
+      }
+      return "Success";
+    }
+    throw new GraphQLError("Unauthenticated: You have to login to do this.");
+  }
+
+  static async unFollow(_: any, args: any, { db, token }: any) {
+    const { unFollowId } = args;
+    if (token != "") {
+      const user = await JwtValidator(token, db);
+      try {
+        await db.follows.delete({
+          where: {
+            followerId_followingId: {
+              followerId: user.id,
+              followingId: unFollowId,
+            },
+          },
+        });
+      } catch (e) {
+        UserHelper.catchDBErrors(e, "You can't unfollow someone who you don't follow");
+      }
+      return "Success";
     }
     throw new GraphQLError("Unauthenticated: You have to login to do this.");
   }
