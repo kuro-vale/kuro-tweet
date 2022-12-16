@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql/error/index.js";
 
-export class UserHelper {
+export class Helper {
   static catchDBErrors(e: any, message: string) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       switch (e.code) {

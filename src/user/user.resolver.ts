@@ -3,7 +3,7 @@ import { UserValidator } from "./user.validator.js";
 import * as bcrypt from "bcrypt";
 import { JwtGenerator } from "../jwt/jwt-generator.js";
 import { JwtValidator } from "../jwt/jwt-validator.js";
-import { UserHelper } from "./user.helper.js";
+import { Helper } from "../helper.js";
 
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
@@ -63,7 +63,7 @@ export class UserResolver {
         user: user,
       };
     } catch (e) {
-      UserHelper.catchDBErrors(e, "Username already taken");
+      Helper.catchDBErrors(e, "Username already taken");
     }
   }
 
@@ -123,7 +123,7 @@ export class UserResolver {
           },
         });
       } catch (e) {
-        UserHelper.catchDBErrors(e, "You already follow this person");
+        Helper.catchDBErrors(e, "You already follow this person");
       }
       return "Success";
     }
@@ -144,7 +144,7 @@ export class UserResolver {
           },
         });
       } catch (e) {
-        UserHelper.catchDBErrors(e, "You can't unfollow someone who you don't follow");
+        Helper.catchDBErrors(e, "You can't unfollow someone who you don't follow");
       }
       return "Success";
     }
