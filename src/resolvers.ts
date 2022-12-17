@@ -5,6 +5,7 @@ export const Resolvers = {
   Query: {
     profile: UserResolver.profile,
     users: UserResolver.query,
+    userById: UserResolver.getByID
   },
   User: {
     followers: UserResolver.query_followers,

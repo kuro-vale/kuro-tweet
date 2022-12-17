@@ -6,6 +6,8 @@ type Query {
     profile: User
     """Retrieve all user"""
     users(page: Int, filter: FilterUsers): UserPagination
+    """Get user by ID"""
+    userById(userId: Int!): User
 }
 
 type Mutation

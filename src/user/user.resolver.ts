@@ -32,6 +32,14 @@ export class UserResolver {
     };
   }
 
+  static async getByID(_: any, { userId }: any, { db }: any) {
+    return await db.user.findUnique({
+      where: {
+        id: userId
+      }
+    })
+  }
+
   static async query_followers(parent: any, __: any, { db }: any) {
     const followers = await db.user.findUnique({
       where: {
