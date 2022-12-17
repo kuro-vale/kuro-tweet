@@ -37,12 +37,10 @@ type UserOps {
     unfollow(unFollowId: Int!): String
 }
 
-"""
-Type used for authentication
-"""
+"""Type used for authentication"""
 type User {
     """"ID of the user"""
-    id: ID
+    id: Int
     """Username of the user, this field must be unique"""
     username: String
     """Date of registration"""
@@ -51,6 +49,30 @@ type User {
     followers: [User]
     """Users this user is following"""
     following: [User]
+    """Tweets of this user"""
+    tweets: [Tweet]
+    """Tweets this user likes"""
+    hearts: [Tweet]
+}
+
+"""The main type of this app LMAO"""
+type Tweet {
+    """ID of the tweet"""
+    id: Int
+    """Content of the tweet"""
+    body: String
+    """Writer of the tweet"""
+    author: User
+    """Responses of this tweet"""
+    comments: [Tweet]
+    """Users who retweeted this"""
+    retweets: [User]
+    """Users who liked this"""
+    hearts: [User]
+    """If this tweet is a response to another tweet, show its parent"""
+    parent: Tweet
+    """Date of creation"""
+    createdAt: Date
 }
 
 """Authentication payload"""
@@ -87,7 +109,9 @@ type UserPagination {
     data: [User]
 }
 
+"""Input to filter users"""
 input FilterUsers {
+    """Filter users by username"""
     username: String
 }
 `;
