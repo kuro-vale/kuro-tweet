@@ -3,13 +3,15 @@ import { UserResolver } from "./user/user.resolver.js";
 
 export const Resolvers = {
   Query: {
-    profile: UserResolver.profile,
-    users: UserResolver.query,
-    userById: UserResolver.getByID
+    UserQueries: () => "",
   },
-  User: {
-    followers: UserResolver.query_followers,
-    following: UserResolver.query_following,
+  UserQueries: {
+    profile: UserResolver.profile,
+    searchUsers: UserResolver.query,
+    userById: UserResolver.getByID,
+    followers: UserResolver.queryFollowers,
+    following: UserResolver.queryFollowing,
+    followersYouMayKnow: UserResolver.queryFollowersYouMayKnow,
   },
   Mutation: {
     Auth: () => "",

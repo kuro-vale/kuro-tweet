@@ -1,13 +1,11 @@
 export const Schema = `#graphql
 scalar Date
 
-type Query {
-    """Retrieve logged user"""
-    profile: User
-    """Retrieve all user"""
-    users(page: Int, filter: FilterUsers): UserPagination
-    """Get user by ID"""
-    userById(userId: Int!): User
+type Query
+
+extend type Query {
+    """User Queries"""
+    UserQueries: UserQueries
 }
 
 type Mutation
@@ -37,6 +35,34 @@ type UserOps {
     unfollow(unFollowId: Int!): String
 }
 
+"""UserQueries"""
+type UserQueries {
+    """Get logged user"""
+    profile: User
+    """Search users"""
+    searchUsers(page: Int, filter: FilterUsers!): UserPagination
+    """Get user by ID"""
+    userById(userId: Int!): User
+    """Get users that follow X user"""
+    followers(
+        userId: Int!,
+        """Pagination by cursor, get users after X user ID"""
+        cursor: Int
+    ): [User]
+    """Get users that X user follows"""
+    following(
+        userId: Int!,
+        """Pagination by cursor, get users after X user ID"""
+        cursor: Int
+    ): [User]
+    """Get followers of X user that you follow"""
+    followersYouMayKnow(
+        userId: Int!,
+        """Pagination by cursor, get users after X user ID"""
+        cursor: Int
+    ): [User]
+}
+
 """Type used for authentication"""
 type User {
     """"ID of the user"""
@@ -45,10 +71,6 @@ type User {
     username: String
     """Date of registration"""
     joined: Date
-    """User that are following this user"""
-    followers: [User]
-    """Users this user is following"""
-    following: [User]
     """Tweets of this user"""
     tweets: [Tweet]
     """Tweets this user likes"""

@@ -4,6 +4,7 @@ import * as bcrypt from "bcrypt";
 import { JwtGenerator } from "../jwt/jwt-generator.js";
 import { JwtValidator } from "../jwt/jwt-validator.js";
 import { Helper } from "../helper.js";
+import { UserHelper } from "./user.helper.js";
 
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
@@ -14,6 +15,7 @@ export class UserResolver {
         contains: filter.username,
         mode: "insensitive",
       },
+      deleted: null,
     };
     if (page == null || page < 1) {
       page = 1;
@@ -33,45 +35,72 @@ export class UserResolver {
   }
 
   static async getByID(_: any, { userId }: any, { db }: any) {
-    return await db.user.findUnique({
+    return await db.user.findFirst({
       where: {
-        id: userId
-      }
-    })
-  }
-
-  static async query_followers(parent: any, __: any, { db }: any) {
-    const followers = await db.user.findUnique({
-      where: {
-        username: parent.username,
-      },
-    }).followedBy({
-      include: {
-        follower: true,
+        id: userId,
+        deleted: null,
       },
     });
-    let response = [];
-    for (const follower of followers) {
-      response.push(follower.follower);
-    }
-    return response;
   }
 
-  static async query_following(parent: any, __: any, { db }: any) {
-    const followings = await db.user.findUnique({
+  static async queryFollowers(_: any, { userId, cursor }: any, { db }: any) {
+    const query = {
       where: {
-        username: parent.username,
+        deleted: null,
+        following: {
+          some: {
+            followingId: userId,
+          },
+        },
       },
-    }).following({
-      include: {
-        following: true,
+      orderBy: {
+        id: "asc",
       },
-    });
-    let response = [];
-    for (const following of followings) {
-      response.push(following.following);
+    };
+    return UserHelper.userCursorPaginator(db, cursor, query);
+  }
+
+  static async queryFollowing(_: any, { userId, cursor }: any, { db }: any) {
+    const query = {
+      where: {
+        deleted: null,
+        followedBy: {
+          some: {
+            followerId: userId,
+          },
+        },
+      },
+      orderBy: {
+        id: "asc",
+      },
+    };
+    return UserHelper.userCursorPaginator(db, cursor, query);
+  }
+
+  static async queryFollowersYouMayKnow(_: any, { userId, cursor }: any, { db, token }: any) {
+    if (token != "") {
+      const user = await JwtValidator(token, db);
+      const query = {
+        where: {
+          deleted: null,
+          following: {
+            some: {
+              followingId: userId,
+            },
+          },
+          followedBy: {
+            some: {
+              followerId: user.id,
+            },
+          },
+        },
+        orderBy: {
+          id: "asc",
+        },
+      };
+      return UserHelper.userCursorPaginator(db, cursor, query);
     }
-    return response;
+    throw new GraphQLError(LoginMessage);
   }
 
   static async register(_: any, args: any, { db }: any) {
