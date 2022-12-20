@@ -43,6 +43,8 @@ type TweetOps {
     compose(body: String!): Tweet
     """Delete a tweet"""
     deleteTweet(tweetId: Int!): String
+    """Retweet a tweet"""
+    retweet(tweetId: Int!): String
 }
 
 """UserQueries"""

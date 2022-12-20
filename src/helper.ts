@@ -9,6 +9,8 @@ export class Helper {
           throw new GraphQLError(message);
         case "P2025":
           throw new GraphQLError(message);
+        case "P2003":
+          throw new GraphQLError(message);
         default:
           console.error(e);
           throw new GraphQLError("Well, this never happen before, please try again");
