@@ -1,5 +1,6 @@
 import { DateScalar } from "./scalars/date.scalar.js";
 import { UserResolver } from "./user/user.resolver.js";
+import { TweetResolver } from "./tweet/tweet.resolver.js";
 
 export const Resolvers = {
   Query: {
@@ -16,6 +17,7 @@ export const Resolvers = {
   Mutation: {
     Auth: () => "",
     UserOps: () => "",
+    TweetOps: () => "",
   },
   Auth: {
     register: UserResolver.register,
@@ -25,6 +27,9 @@ export const Resolvers = {
     deleteUser: UserResolver.delete,
     follow: UserResolver.follow,
     unfollow: UserResolver.unFollow,
+  },
+  TweetOps: {
+    compose: TweetResolver.compose,
   },
   Date: DateScalar,
 };
