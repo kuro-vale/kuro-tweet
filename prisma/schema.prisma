@@ -44,6 +44,7 @@ model Tweet {
     comments        Tweet[]     @relation("ParentComments")
 
     createdAt       DateTime    @default(now())
+    deleted         DateTime?
 }
 
 model Retweet {

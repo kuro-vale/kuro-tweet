@@ -41,6 +41,8 @@ type UserOps {
 type TweetOps {
     """Create a new tweet"""
     compose(body: String!): Tweet
+    """Delete a tweet"""
+    deleteTweet(tweetId: Int!): String
 }
 
 """UserQueries"""
@@ -79,10 +81,10 @@ type User {
     username: String
     """Date of registration"""
     joined: Date
-#    """Tweets of this user"""
-#    tweets: [Tweet]
-#    """Tweets this user likes"""
-#    hearts: [Tweet]
+    #    """Tweets of this user"""
+    #    tweets: [Tweet]
+    #    """Tweets this user likes"""
+    #    hearts: [Tweet]
 }
 
 """The main type of this app LMAO"""
@@ -93,12 +95,12 @@ type Tweet {
     body: String
     """Writer of the tweet"""
     author: User
-#    """Responses of this tweet"""
-#    comments: [Tweet]
-#    """Users who retweeted this"""
-#    retweets: [User]
-#    """Users who liked this"""
-#    hearts: [User]
+    #    """Responses of this tweet"""
+    #    comments: [Tweet]
+    #    """Users who retweeted this"""
+    #    retweets: [User]
+    #    """Users who liked this"""
+    #    hearts: [User]
     """If this tweet is a response to another tweet, show its parent"""
     parent: Tweet
     """Date of creation"""

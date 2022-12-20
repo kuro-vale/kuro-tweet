@@ -22,4 +22,27 @@ export class TweetResolver {
     }
     throw new GraphQLError(LoginMessage);
   }
+
+  static async deleteTweet(_: any, { tweetId }: any, { db, token }: any) {
+    if (token != "") {
+      const user = await JwtValidator(token, db);
+      const tweet = await db.tweet.findUnique({ where: { id: tweetId } });
+      if (user.id == tweet.authorId) {
+        if (tweet.deleted == null) {
+          await db.tweet.update({
+            where: {
+              id: tweetId,
+            },
+            data: {
+              deleted: new Date(),
+            },
+          });
+          return "Success";
+        }
+        throw new GraphQLError("This tweet was already deleted");
+      }
+      throw new GraphQLError("Forbidden");
+    }
+    throw new GraphQLError(LoginMessage);
+  }
 }

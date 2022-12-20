@@ -5,6 +5,7 @@ CREATE TABLE "Tweet" (
     "authorId" INTEGER NOT NULL,
     "parentId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deleted" TIMESTAMP(3),
 
     CONSTRAINT "Tweet_pkey" PRIMARY KEY ("id")
 );

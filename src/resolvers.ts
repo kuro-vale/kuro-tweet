@@ -30,6 +30,7 @@ export const Resolvers = {
   },
   TweetOps: {
     compose: TweetResolver.compose,
+    deleteTweet: TweetResolver.deleteTweet,
   },
   Date: DateScalar,
 };

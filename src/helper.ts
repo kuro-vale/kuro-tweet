@@ -10,6 +10,7 @@ export class Helper {
         case "P2025":
           throw new GraphQLError(message);
         default:
+          console.error(e);
           throw new GraphQLError("Well, this never happen before, please try again");
       }
     }
