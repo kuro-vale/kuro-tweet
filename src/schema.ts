@@ -45,6 +45,8 @@ type TweetOps {
     deleteTweet(tweetId: Int!): String
     """Retweet a tweet"""
     retweet(tweetId: Int!): String
+    """Undo Retweet"""
+    unRetweet(tweetId: Int!): String
 }
 
 """UserQueries"""

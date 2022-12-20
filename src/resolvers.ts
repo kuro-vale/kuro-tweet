@@ -32,6 +32,7 @@ export const Resolvers = {
     compose: TweetResolver.compose,
     deleteTweet: TweetResolver.deleteTweet,
     retweet: TweetResolver.retweet,
+    unRetweet: TweetResolver.unRetweet,
   },
   Date: DateScalar,
 };

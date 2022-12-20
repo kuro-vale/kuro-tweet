@@ -73,4 +73,23 @@ export class TweetResolver {
     }
     throw new GraphQLError(LoginMessage);
   }
+
+  static async unRetweet(_: any, { tweetId }: any, { db, token }: any) {
+    if (token != null) {
+      const user = await JwtValidator(token, db);
+      try {
+        await db.retweet.delete({
+          where: {
+            byId_tweetId: {
+              tweetId: tweetId, byId: user.id,
+            },
+          },
+        });
+      } catch (e) {
+        Helper.catchDBErrors(e, "Cannot undo retweet of a tweet that you don't retweet");
+      }
+      return "Success";
+    }
+    throw new GraphQLError(LoginMessage);
+  }
 }
