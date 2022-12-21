@@ -1,6 +1,4 @@
 import jwt from "jsonwebtoken";
-import { GraphQLError } from "graphql/error/index.js";
-
 
 export async function JwtValidator(token: string, db: any) {
   try {
@@ -12,6 +10,6 @@ export async function JwtValidator(token: string, db: any) {
       },
     });
   } catch (e) {
-    throw new GraphQLError("Unauthenticated: Invalid Token");
+    return null;
   }
 }

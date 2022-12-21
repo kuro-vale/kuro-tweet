@@ -1,5 +1,4 @@
 import { GraphQLError } from "graphql/error/index.js";
-import { JwtValidator } from "../jwt/jwt-validator.js";
 import { TweetValidator } from "./tweet.validator.js";
 import { Helper } from "../helper.js";
 
@@ -7,9 +6,8 @@ import { Helper } from "../helper.js";
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
 export class TweetResolver {
-  static async compose(_: any, { body }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async compose(_: any, { body }: any, { db, user }: any) {
+    if (user != null) {
       await TweetValidator(body);
       return await db.tweet.create({
         data: {
@@ -24,9 +22,8 @@ export class TweetResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async deleteTweet(_: any, { tweetId }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async deleteTweet(_: any, { tweetId }: any, { db, user }: any) {
+    if (user != null) {
       const tweet = await db.tweet.findUnique({ where: { id: tweetId } });
       if (tweet != null && user.id == tweet.authorId) {
         if (tweet.deleted == null) {
@@ -47,9 +44,8 @@ export class TweetResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async retweet(_: any, { tweetId }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async retweet(_: any, { tweetId }: any, { db, user }: any) {
+    if (user != null) {
       try {
         await db.retweet.upsert({
           where: {
@@ -74,9 +70,8 @@ export class TweetResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async unRetweet(_: any, { tweetId }: any, { db, token }: any) {
-    if (token != null) {
-      const user = await JwtValidator(token, db);
+  static async unRetweet(_: any, { tweetId }: any, { db, user }: any) {
+    if (user != null) {
       try {
         await db.retweet.delete({
           where: {
@@ -86,7 +81,7 @@ export class TweetResolver {
           },
         });
       } catch (e) {
-        Helper.catchDBErrors(e, "Cannot undo retweet of a tweet that you don't retweet");
+        Helper.catchDBErrors(e, "Cannot undo a retweet of a tweet that you don't retweeted");
       }
       return "Success";
     }

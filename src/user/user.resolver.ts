@@ -2,7 +2,6 @@ import { GraphQLError } from "graphql/error/index.js";
 import { UserValidator } from "./user.validator.js";
 import * as bcrypt from "bcrypt";
 import { JwtGenerator } from "../jwt/jwt-generator.js";
-import { JwtValidator } from "../jwt/jwt-validator.js";
 import { Helper } from "../helper.js";
 import { UserHelper } from "./user.helper.js";
 
@@ -77,9 +76,8 @@ export class UserResolver {
     return UserHelper.userCursorPaginator(db, cursor, query);
   }
 
-  static async queryFollowersYouMayKnow(_: any, { userId, cursor }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async queryFollowersYouMayKnow(_: any, { userId, cursor }: any, { db, user }: any) {
+    if (user != null) {
       const query = {
         where: {
           deleted: null,
@@ -142,16 +140,15 @@ export class UserResolver {
     throw new GraphQLError("Invalid Credentials");
   }
 
-  static async profile(_: any, __: any, { db, token }: any) {
-    if (token != "") {
-      return await JwtValidator(token, db);
+  static async profile(_: any, __: any, { user }: any) {
+    if (user != null) {
+      return user;
     }
     throw new GraphQLError(LoginMessage);
   }
 
-  static async delete(_: any, args: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async delete(_: any, args: any, { db, user }: any) {
+    if (user != null) {
       await db.user.update({
         where: {
           id: user.id,
@@ -165,9 +162,8 @@ export class UserResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async follow(_: any, { followId }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async follow(_: any, { followId }: any, { db, user }: any) {
+    if (user != null) {
       if (user.id == followId) {
         throw new GraphQLError("Forbidden: You can't follow yourself");
       }
@@ -186,9 +182,8 @@ export class UserResolver {
     throw new GraphQLError(LoginMessage);
   }
 
-  static async unFollow(_: any, { unFollowId }: any, { db, token }: any) {
-    if (token != "") {
-      const user = await JwtValidator(token, db);
+  static async unFollow(_: any, { unFollowId }: any, { db, user }: any) {
+    if (user != null) {
       try {
         await db.follows.delete({
           where: {
