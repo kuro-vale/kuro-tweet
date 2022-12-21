@@ -131,4 +131,28 @@ export class TweetResolver {
     }
     throw new GraphQLError(LoginMessage);
   }
+
+  static async countComments(parent: any, __: any, { db }: any) {
+    return await db.tweet.count({
+      where: {
+        parentId: parent.id,
+      },
+    });
+  }
+
+  static async countRetweets(parent: any, __: any, { db }: any) {
+    return await db.retweet.count({
+      where: {
+        tweetId: parent.id,
+      },
+    });
+  }
+
+  static async countHearts(parent: any, __: any, { db }: any) {
+    return await db.heart.count({
+      where: {
+        tweetId: parent.id,
+      },
+    });
+  }
 }

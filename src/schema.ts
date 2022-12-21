@@ -107,12 +107,12 @@ type Tweet {
     body: String
     """Writer of the tweet"""
     author: User
-    #    """Responses of this tweet"""
-    #    comments: [Tweet]
-    #    """Users who retweeted this"""
-    #    retweets: [User]
-    #    """Users who liked this"""
-    #    hearts: [User]
+    """Amount of responses of this tweet"""
+    comments: Int
+    """Amount of users who retweeted this"""
+    retweets: Int
+    """Amount of users who liked this"""
+    hearts: Int
     """If this tweet is a response to another tweet, show its parent"""
     parent: Tweet
     """Date of creation"""
