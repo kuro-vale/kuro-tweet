@@ -14,9 +14,6 @@ export class TweetResolver {
           body: body,
           authorId: user.id,
         },
-        include: {
-          author: true,
-        },
       });
     }
     throw new GraphQLError(LoginMessage);
@@ -30,9 +27,6 @@ export class TweetResolver {
           body: body,
           authorId: user.id,
           parentId: tweetId,
-        },
-        include: {
-          author: true,
         },
       });
     }
@@ -153,6 +147,15 @@ export class TweetResolver {
     return await db.tweet.findFirst({
       where: {
         id: parent.parentId,
+        deleted: null,
+      },
+    });
+  }
+
+  static async getAuthor(parent: any, __: any, { db }: any) {
+    return await db.user.findFirst({
+      where: {
+        id: parent.authorId,
         deleted: null,
       },
     });

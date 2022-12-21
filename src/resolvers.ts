@@ -47,7 +47,8 @@ export const Resolvers = {
     comments: TweetResolver.countComments,
     retweets: TweetResolver.countRetweets,
     hearts: TweetResolver.countHearts,
-    parent: TweetResolver.getParent
+    parent: TweetResolver.getParent,
+    author: TweetResolver.getAuthor,
   },
   Date: DateScalar,
 };
