@@ -62,10 +62,10 @@ export class TweetResolver {
             byId: user.id,
           },
         });
+        return "Success";
       } catch (e) {
         Helper.catchDBErrors(e, "Cannot retweet a tweet that don't exists");
       }
-      return "Success";
     }
     throw new GraphQLError(LoginMessage);
   }
@@ -80,10 +80,54 @@ export class TweetResolver {
             },
           },
         });
+        return "Success";
       } catch (e) {
         Helper.catchDBErrors(e, "Cannot undo a retweet of a tweet that you don't retweeted");
       }
-      return "Success";
+    }
+    throw new GraphQLError(LoginMessage);
+  }
+
+  static async heart(_: any, { tweetId }: any, { db, user }: any) {
+    if (user != null) {
+      try {
+        await db.heart.upsert({
+          where: {
+            byId_tweetId: {
+              byId: user.id,
+              tweetId: tweetId,
+            },
+          },
+          update: {
+            createdAt: new Date(),
+          },
+          create: {
+            byId: user.id,
+            tweetId: tweetId,
+          },
+        });
+        return "Success";
+      } catch (e) {
+        Helper.catchDBErrors(e, "Cannot heart a tweet that don't exists");
+      }
+    }
+    throw new GraphQLError(LoginMessage);
+  }
+
+  static async unHeart(_: any, { tweetId }: any, { db, user }: any) {
+    if (user != null) {
+      try {
+        await db.heart.delete({
+          where: {
+            byId_tweetId: {
+              tweetId: tweetId, byId: user.id,
+            },
+          },
+        });
+        return "Success";
+      } catch (e) {
+        Helper.catchDBErrors(e, "Cannot undo a heart of a tweet that you don't liked");
+      }
     }
     throw new GraphQLError(LoginMessage);
   }

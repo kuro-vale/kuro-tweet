@@ -47,6 +47,10 @@ type TweetOps {
     retweet(tweetId: Int!): String
     """Undo Retweet"""
     unRetweet(tweetId: Int!): String
+    """Like a tweet"""
+    heart(tweetId: Int!): String
+    """Unlike a tweet"""
+    unHeart(tweetId: Int!): String
 }
 
 """UserQueries"""

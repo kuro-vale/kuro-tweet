@@ -33,6 +33,8 @@ export const Resolvers = {
     deleteTweet: TweetResolver.deleteTweet,
     retweet: TweetResolver.retweet,
     unRetweet: TweetResolver.unRetweet,
+    heart: TweetResolver.heart,
+    unHeart: TweetResolver.unHeart,
   },
   Date: DateScalar,
 };
