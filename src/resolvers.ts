@@ -36,5 +36,11 @@ export const Resolvers = {
     heart: TweetResolver.heart,
     unHeart: TweetResolver.unHeart,
   },
+  User: {
+    tweets: UserResolver.countTweets,
+    hearts: UserResolver.countHearts,
+    followers: UserResolver.countFollowers,
+    following: UserResolver.countFollowing,
+  },
   Date: DateScalar,
 };

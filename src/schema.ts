@@ -89,10 +89,14 @@ type User {
     username: String
     """Date of registration"""
     joined: Date
-    #    """Tweets of this user"""
-    #    tweets: [Tweet]
-    #    """Tweets this user likes"""
-    #    hearts: [Tweet]
+    """Amount of tweets of this user"""
+    tweets: Int
+    """Amount of tweets this user likes"""
+    hearts: Int
+    """Amount of user followers"""
+    followers: Int
+    """Amount of user following"""
+    following: Int
 }
 
 """The main type of this app LMAO"""

@@ -200,4 +200,36 @@ export class UserResolver {
     }
     throw new GraphQLError(LoginMessage);
   }
+
+  static async countTweets(parent: any, __: any, { db }: any) {
+    return await db.tweet.count({
+      where: {
+        authorId: parent.id,
+      },
+    });
+  }
+
+  static async countHearts(parent: any, __: any, { db }: any) {
+    return await db.heart.count({
+      where: {
+        byId: parent.id,
+      },
+    });
+  }
+
+  static async countFollowers(parent: any, __: any, { db }: any) {
+    return await db.follows.count({
+      where: {
+        followingId: parent.id,
+      },
+    });
+  }
+
+  static async countFollowing(parent: any, __: any, { db }: any) {
+    return await db.follows.count({
+      where: {
+        followerId: parent.id,
+      },
+    });
+  }
 }
