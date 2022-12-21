@@ -157,6 +157,14 @@ export class UserResolver {
           deleted: new Date(),
         },
       });
+      await db.tweet.updateMany({
+        where: {
+          authorId: user.id,
+        },
+        data: {
+          deleted: new Date(),
+        },
+      });
       return `${user.username} was deleted`;
     }
     throw new GraphQLError(LoginMessage);
