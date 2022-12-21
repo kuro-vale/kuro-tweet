@@ -30,6 +30,7 @@ export const Resolvers = {
   },
   TweetOps: {
     compose: TweetResolver.compose,
+    comment: TweetResolver.comment,
     deleteTweet: TweetResolver.deleteTweet,
     retweet: TweetResolver.retweet,
     unRetweet: TweetResolver.unRetweet,
@@ -46,6 +47,7 @@ export const Resolvers = {
     comments: TweetResolver.countComments,
     retweets: TweetResolver.countRetweets,
     hearts: TweetResolver.countHearts,
+    parent: TweetResolver.getParent
   },
   Date: DateScalar,
 };

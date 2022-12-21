@@ -22,6 +22,23 @@ export class TweetResolver {
     throw new GraphQLError(LoginMessage);
   }
 
+  static async comment(_: any, { body, tweetId }: any, { db, user }: any) {
+    if (user != null) {
+      await TweetValidator(body);
+      return await db.tweet.create({
+        data: {
+          body: body,
+          authorId: user.id,
+          parentId: tweetId,
+        },
+        include: {
+          author: true,
+        },
+      });
+    }
+    throw new GraphQLError(LoginMessage);
+  }
+
   static async deleteTweet(_: any, { tweetId }: any, { db, user }: any) {
     if (user != null) {
       const tweet = await db.tweet.findUnique({ where: { id: tweetId } });
@@ -130,6 +147,15 @@ export class TweetResolver {
       }
     }
     throw new GraphQLError(LoginMessage);
+  }
+
+  static async getParent(parent: any, __: any, { db }: any) {
+    return await db.tweet.findFirst({
+      where: {
+        id: parent.parentId,
+        deleted: null,
+      },
+    });
   }
 
   static async countComments(parent: any, __: any, { db }: any) {

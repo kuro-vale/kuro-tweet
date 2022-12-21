@@ -41,6 +41,8 @@ type UserOps {
 type TweetOps {
     """Create a new tweet"""
     compose(body: String!): Tweet
+    """Compose a comment"""
+    comment(body: String!, tweetId: Int!): Tweet
     """Delete a tweet"""
     deleteTweet(tweetId: Int!): String
     """Retweet a tweet"""
