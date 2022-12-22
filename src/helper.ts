@@ -19,19 +19,4 @@ export class Helper {
     console.error(e);
     throw new GraphQLError("Something bad happen, please try again.");
   }
-
-  static metadataAssembler(count: number, per: number, page: number) {
-    const lastPage = Math.ceil(count / per);
-    const hasPrevious = page > 1 && page <= lastPage;
-    const hasNext = page >= 1 && page < lastPage;
-    return {
-      per: per,
-      total: count,
-      current: page,
-      previous: hasPrevious ? page - 1 : null,
-      next: hasNext ? page + 1 : null,
-      first: 1,
-      last: lastPage,
-    };
-  }
 }

@@ -5,6 +5,7 @@ import { TweetResolver } from "./tweet/tweet.resolver.js";
 export const Resolvers = {
   Query: {
     UserQueries: () => "",
+    TweetQueries: () => "",
   },
   UserQueries: {
     profile: UserResolver.profile,
@@ -13,6 +14,9 @@ export const Resolvers = {
     followers: UserResolver.queryFollowers,
     following: UserResolver.queryFollowing,
     followersYouMayKnow: UserResolver.queryFollowersYouMayKnow,
+  },
+  TweetQueries: {
+    searchTweets: TweetResolver.query,
   },
   Mutation: {
     Auth: () => "",

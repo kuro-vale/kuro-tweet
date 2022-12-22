@@ -1,11 +1,32 @@
 import { GraphQLError } from "graphql/error/index.js";
 import { TweetValidator } from "./tweet.validator.js";
 import { Helper } from "../helper.js";
+import { TweetHelper } from "./tweet.helper.js";
 
 
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
 export class TweetResolver {
+
+  static async query(_: any, { cursor, filter }: any, { db }: any) {
+    filter = {
+      where: {
+        body: {
+          contains: filter.body,
+          mode: "insensitive",
+        },
+        deleted: null,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        author: true,
+      },
+    };
+    return await TweetHelper.tweetCursorPaginator(db, cursor, filter);
+  }
+
   static async compose(_: any, { body }: any, { db, user }: any) {
     if (user != null) {
       await TweetValidator(body);
@@ -144,6 +165,7 @@ export class TweetResolver {
   }
 
   static async getParent(parent: any, __: any, { db }: any) {
+    if (parent.parentId == null) return null;
     return await db.tweet.findFirst({
       where: {
         id: parent.parentId,
@@ -153,6 +175,7 @@ export class TweetResolver {
   }
 
   static async getAuthor(parent: any, __: any, { db }: any) {
+    if (parent.author != null) return parent.author;
     return await db.user.findFirst({
       where: {
         id: parent.authorId,

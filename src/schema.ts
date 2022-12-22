@@ -6,6 +6,8 @@ type Query
 extend type Query {
     """User Queries"""
     UserQueries: UserQueries
+    """Tweet  Queries"""
+    TweetQueries: TweetQueries
 }
 
 type Mutation
@@ -60,7 +62,11 @@ type UserQueries {
     """Get logged user"""
     profile: User
     """Search users"""
-    searchUsers(page: Int, filter: FilterUsers!): UserPagination
+    searchUsers(
+        filter: FilterUsers!,
+        """Pagination by cursor, get users after X user ID"""
+        cursor: Int
+    ): [User]
     """Get user by ID"""
     userById(userId: Int!): User
     """Get users that follow X user"""
@@ -81,6 +87,16 @@ type UserQueries {
         """Pagination by cursor, get users after X user ID"""
         cursor: Int
     ): [User]
+}
+
+"""Tweet Queries"""
+type TweetQueries {
+    """Search tweets"""
+    searchTweets(
+        filter: FilterTweets!,
+        """Pagination by cursor, get users after X user ID"""
+        cursor: Int
+    ): [Tweet]
 }
 
 """Type used for authentication"""
@@ -117,6 +133,8 @@ type Tweet {
     hearts: Int
     """If this tweet is a response to another tweet, show its parent"""
     parent: Tweet
+    """Null if tweet is not a response to another tweet"""
+    parentId: Int
     """Date of creation"""
     createdAt: Date
 }
@@ -129,35 +147,15 @@ type AuthPayload {
     user: User!
 }
 
-"""Metadata for pagination"""
-type PaginationMetadata {
-    """Max elements in the page"""
-    per: Int
-    """Total elements"""
-    total: Int
-    """Current page"""
-    current: Int
-    """Previous page"""
-    previous: Int
-    """Next page"""
-    next: Int
-    """First page"""
-    first: Int
-    """Last page"""
-    last: Int
-}
-
-"""Return metadata and users"""
-type UserPagination {
-    """Pagination Metadata"""
-    metadata: PaginationMetadata
-    """All users retrieved"""
-    data: [User]
-}
-
 """Input to filter users"""
 input FilterUsers {
     """Filter users by username"""
     username: String
+}
+
+"""Input to filter tweets"""
+input FilterTweets {
+    """Filter tweets by content"""
+    body: String
 }
 `;
