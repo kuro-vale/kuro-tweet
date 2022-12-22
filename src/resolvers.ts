@@ -1,6 +1,8 @@
 import { DateScalar } from "./scalars/date.scalar.js";
-import { UserResolver } from "./user/user.resolver.js";
-import { TweetResolver } from "./tweet/tweet.resolver.js";
+import { UserQueries } from "./user/resolvers/user.queries.js";
+import { UserMutations } from "./user/resolvers/user.mutations.js";
+import { TweetQueries } from "./tweet/resolvers/tweet.queries.js";
+import { TweetMutations } from "./tweet/resolvers/tweet.mutations.js";
 
 export const Resolvers = {
   Query: {
@@ -8,15 +10,15 @@ export const Resolvers = {
     TweetQueries: () => "",
   },
   UserQueries: {
-    profile: UserResolver.profile,
-    searchUsers: UserResolver.query,
-    userById: UserResolver.getByID,
-    followers: UserResolver.queryFollowers,
-    following: UserResolver.queryFollowing,
-    followersYouMayKnow: UserResolver.queryFollowersYouMayKnow,
+    profile: UserQueries.profile,
+    searchUsers: UserQueries.query,
+    userById: UserQueries.getByID,
+    followers: UserQueries.queryFollowers,
+    following: UserQueries.queryFollowing,
+    followersYouMayKnow: UserQueries.queryFollowersYouMayKnow,
   },
   TweetQueries: {
-    searchTweets: TweetResolver.query,
+    searchTweets: TweetQueries.query,
   },
   Mutation: {
     Auth: () => "",
@@ -24,35 +26,35 @@ export const Resolvers = {
     TweetOps: () => "",
   },
   Auth: {
-    register: UserResolver.register,
-    login: UserResolver.login,
+    register: UserMutations.register,
+    login: UserMutations.login,
   },
   UserOps: {
-    deleteUser: UserResolver.delete,
-    follow: UserResolver.follow,
-    unfollow: UserResolver.unFollow,
+    deleteUser: UserMutations.delete,
+    follow: UserMutations.follow,
+    unfollow: UserMutations.unFollow,
   },
   TweetOps: {
-    compose: TweetResolver.compose,
-    comment: TweetResolver.comment,
-    deleteTweet: TweetResolver.deleteTweet,
-    retweet: TweetResolver.retweet,
-    unRetweet: TweetResolver.unRetweet,
-    heart: TweetResolver.heart,
-    unHeart: TweetResolver.unHeart,
+    compose: TweetMutations.compose,
+    comment: TweetMutations.comment,
+    deleteTweet: TweetMutations.deleteTweet,
+    retweet: TweetMutations.retweet,
+    unRetweet: TweetMutations.unRetweet,
+    heart: TweetMutations.heart,
+    unHeart: TweetMutations.unHeart,
   },
   User: {
-    tweets: UserResolver.countTweets,
-    hearts: UserResolver.countHearts,
-    followers: UserResolver.countFollowers,
-    following: UserResolver.countFollowing,
+    tweets: UserQueries.countTweets,
+    hearts: UserQueries.countHearts,
+    followers: UserQueries.countFollowers,
+    following: UserQueries.countFollowing,
   },
   Tweet: {
-    comments: TweetResolver.countComments,
-    retweets: TweetResolver.countRetweets,
-    hearts: TweetResolver.countHearts,
-    parent: TweetResolver.getParent,
-    author: TweetResolver.getAuthor,
+    comments: TweetQueries.countComments,
+    retweets: TweetQueries.countRetweets,
+    hearts: TweetQueries.countHearts,
+    parent: TweetQueries.getParent,
+    author: TweetQueries.getAuthor,
   },
   Date: DateScalar,
 };

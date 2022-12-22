@@ -1,32 +1,8 @@
+import { TweetValidator } from "../tweet.validator.js";
 import { GraphQLError } from "graphql/error/index.js";
-import { TweetValidator } from "./tweet.validator.js";
-import { Helper } from "../helper.js";
-import { TweetHelper } from "./tweet.helper.js";
+import { Helper } from "../../helper.js";
 
-
-const LoginMessage = "Unauthenticated: You have to login to do this.";
-
-export class TweetResolver {
-
-  static async query(_: any, { cursor, filter }: any, { db }: any) {
-    filter = {
-      where: {
-        body: {
-          contains: filter.body,
-          mode: "insensitive",
-        },
-        deleted: null,
-      },
-      orderBy: {
-        id: "desc",
-      },
-      include: {
-        author: true,
-      },
-    };
-    return await TweetHelper.tweetCursorPaginator(db, cursor, filter);
-  }
-
+export class TweetMutations {
   static async compose(_: any, { body }: any, { db, user }: any) {
     if (user != null) {
       await TweetValidator(body);
@@ -37,7 +13,7 @@ export class TweetResolver {
         },
       });
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async comment(_: any, { body, tweetId }: any, { db, user }: any) {
@@ -51,7 +27,7 @@ export class TweetResolver {
         },
       });
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async deleteTweet(_: any, { tweetId }: any, { db, user }: any) {
@@ -73,7 +49,7 @@ export class TweetResolver {
       }
       throw new GraphQLError("Forbidden");
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async retweet(_: any, { tweetId }: any, { db, user }: any) {
@@ -99,7 +75,7 @@ export class TweetResolver {
         Helper.catchDBErrors(e, "Cannot retweet a tweet that don't exists");
       }
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async unRetweet(_: any, { tweetId }: any, { db, user }: any) {
@@ -117,7 +93,7 @@ export class TweetResolver {
         Helper.catchDBErrors(e, "Cannot undo a retweet of a tweet that you don't retweeted");
       }
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async heart(_: any, { tweetId }: any, { db, user }: any) {
@@ -143,7 +119,7 @@ export class TweetResolver {
         Helper.catchDBErrors(e, "Cannot heart a tweet that don't exists");
       }
     }
-    throw new GraphQLError(LoginMessage);
+    throw new GraphQLError(Helper.LoginMessage);
   }
 
   static async unHeart(_: any, { tweetId }: any, { db, user }: any) {
@@ -161,50 +137,6 @@ export class TweetResolver {
         Helper.catchDBErrors(e, "Cannot undo a heart of a tweet that you don't liked");
       }
     }
-    throw new GraphQLError(LoginMessage);
-  }
-
-  static async getParent(parent: any, __: any, { db }: any) {
-    if (parent.parentId == null) return null;
-    return await db.tweet.findFirst({
-      where: {
-        id: parent.parentId,
-        deleted: null,
-      },
-    });
-  }
-
-  static async getAuthor(parent: any, __: any, { db }: any) {
-    if (parent.author != null) return parent.author;
-    return await db.user.findFirst({
-      where: {
-        id: parent.authorId,
-        deleted: null,
-      },
-    });
-  }
-
-  static async countComments(parent: any, __: any, { db }: any) {
-    return await db.tweet.count({
-      where: {
-        parentId: parent.id,
-      },
-    });
-  }
-
-  static async countRetweets(parent: any, __: any, { db }: any) {
-    return await db.retweet.count({
-      where: {
-        tweetId: parent.id,
-      },
-    });
-  }
-
-  static async countHearts(parent: any, __: any, { db }: any) {
-    return await db.heart.count({
-      where: {
-        tweetId: parent.id,
-      },
-    });
+    throw new GraphQLError(Helper.LoginMessage);
   }
 }

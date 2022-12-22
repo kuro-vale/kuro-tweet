@@ -2,6 +2,8 @@ import { Prisma } from "@prisma/client";
 import { GraphQLError } from "graphql/error/index.js";
 
 export class Helper {
+  static LoginMessage = "Unauthenticated: You have to login to do this.";
+
   static catchDBErrors(e: any, message: string) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       switch (e.code) {
