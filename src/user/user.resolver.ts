@@ -8,17 +8,22 @@ import { UserHelper } from "./user.helper.js";
 const LoginMessage = "Unauthenticated: You have to login to do this.";
 
 export class UserResolver {
-  static async query(_: any, { cursor, filter }: any, { db }: any) {
-    filter = {
+  static async query(_: any, { filter }: any, { db }: any) {
+    return db.user.findMany({
+      take: 10,
       where: {
         username: {
           contains: filter.username,
           mode: "insensitive",
         },
         deleted: null,
-      }
-    };
-    return UserHelper.userCursorPaginator(db, cursor, filter);
+      },
+      orderBy: {
+        followedBy: {
+          _count: "desc",
+        },
+      },
+    });
   }
 
   static async getByID(_: any, { userId }: any, { db }: any) {

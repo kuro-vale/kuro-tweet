@@ -61,12 +61,8 @@ type TweetOps {
 type UserQueries {
     """Get logged user"""
     profile: User
-    """Search users"""
-    searchUsers(
-        filter: FilterUsers!,
-        """Pagination by cursor, get users after X user ID"""
-        cursor: Int
-    ): [User]
+    """Search 10 most followed users"""
+    searchUsers(filter: FilterUsers!): [User]
     """Get user by ID"""
     userById(userId: Int!): User
     """Get users that follow X user"""
