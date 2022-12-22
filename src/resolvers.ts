@@ -19,6 +19,7 @@ export const Resolvers = {
   },
   TweetQueries: {
     searchTweets: TweetQueries.query,
+    tweetById: TweetQueries.tweetById,
   },
   Mutation: {
     Auth: () => "",

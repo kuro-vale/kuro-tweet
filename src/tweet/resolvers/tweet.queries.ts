@@ -20,6 +20,15 @@ export class TweetQueries {
     return await TweetHelper.tweetCursorPaginator(db, cursor, filter);
   }
 
+  static async tweetById(_: any, { tweetId }: any, { db }: any) {
+    return await db.tweet.findFirst({
+      where: {
+        id: tweetId,
+        deleted: null,
+      },
+    });
+  }
+
   static async getParent(parent: any, __: any, { db }: any) {
     if (parent.parentId == null) return null;
     return await db.tweet.findFirst({

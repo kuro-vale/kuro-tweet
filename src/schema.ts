@@ -90,9 +90,11 @@ type TweetQueries {
     """Search tweets"""
     searchTweets(
         filter: FilterTweets!,
-        """Pagination by cursor, get users after X user ID"""
+        """Pagination by cursor, get tweets after X tweet ID"""
         cursor: Int
     ): [Tweet]
+    """Get tweet by id"""
+    tweetById(tweetId: Int!): Tweet
 }
 
 """Type used for authentication"""
