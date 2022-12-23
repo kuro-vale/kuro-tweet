@@ -95,6 +95,12 @@ type TweetQueries {
     ): [Tweet]
     """Get tweet by id"""
     tweetById(tweetId: Int!): Tweet
+    """Get tweet comments"""
+    tweetComments(
+        tweetId: Int!
+        """Pagination by cursor, get tweets after X tweet ID"""
+        cursor: Int
+    ): [Tweet]
 }
 
 """Type used for authentication"""

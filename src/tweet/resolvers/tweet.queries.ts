@@ -29,6 +29,56 @@ export class TweetQueries {
     });
   }
 
+  static async getComments(_: any, { tweetId, cursor }: any, { db }: any) {
+    const mostHearted = await db.tweet.findMany({
+      take: 10,
+      where: {
+        parentId: tweetId,
+        deleted: null,
+      },
+      orderBy: {
+        heartBy: {
+          _count: "desc",
+        },
+      },
+      include: {
+        author: true,
+      },
+    });
+    const mostHeartedIds = [];
+    for (const tweet of mostHearted) {
+      mostHeartedIds.push(tweet.id);
+    }
+    const query = {
+      where: {
+        id: {
+          notIn: mostHeartedIds,
+        },
+        parentId: tweetId,
+        deleted: null,
+      },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        id: "desc",
+      },
+    };
+    const firstCursor = await db.tweet.findFirst({ ...query });
+    mostHearted.push(firstCursor);
+    if (cursor == null) {
+      return mostHearted;
+    }
+    return await db.tweet.findMany({
+      take: 10,
+      skip: 1,
+      cursor: {
+        id: cursor,
+      },
+      ...query,
+    });
+  }
+
   static async getParent(parent: any, __: any, { db }: any) {
     if (parent.parentId == null) return null;
     return await db.tweet.findFirst({
