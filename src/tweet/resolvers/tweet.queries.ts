@@ -10,12 +10,6 @@ export class TweetQueries {
         },
         deleted: null,
       },
-      orderBy: {
-        id: "desc",
-      },
-      include: {
-        author: true,
-      },
     };
     return await TweetHelper.tweetCursorPaginator(db, cursor, filter);
   }
@@ -25,6 +19,9 @@ export class TweetQueries {
       where: {
         id: tweetId,
         deleted: null,
+      },
+      include: {
+        author: true,
       },
     });
   }
@@ -57,12 +54,6 @@ export class TweetQueries {
         parentId: tweetId,
         deleted: null,
       },
-      include: {
-        author: true,
-      },
-      orderBy: {
-        id: "desc",
-      },
     };
     const firstCursor = await db.tweet.findFirst({ ...query });
     mostHearted.push(firstCursor);
@@ -77,6 +68,32 @@ export class TweetQueries {
       },
       ...query,
     });
+  }
+
+  static async queryUserTweets(_: any, { cursor, filter, userId }: any, { db }: any) {
+    if (filter == null) filter = { body: "" };
+    filter = {
+      where: {
+        body: {
+          contains: filter.body,
+          mode: "insensitive",
+        },
+        authorId: userId,
+        deleted: null,
+      },
+    };
+    return await TweetHelper.tweetCursorPaginator(db, cursor, filter);
+  }
+
+  static async indexUserTweets(_: any, { cursor, userId }: any, { db }: any) {
+    const query = {
+      where: {
+        parentId: null,
+        authorId: userId,
+        deleted: null,
+      },
+    };
+    return await TweetHelper.tweetCursorPaginator(db, cursor, query);
   }
 
   static async getParent(parent: any, __: any, { db }: any) {

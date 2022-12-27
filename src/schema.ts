@@ -101,6 +101,19 @@ type TweetQueries {
         """Pagination by cursor, get tweets after X tweet ID"""
         cursor: Int
     ): [Tweet]
+    """Query user's tweets"""
+    queryUserTweets(
+        userId: Int!,
+        filter: FilterTweets,
+        """Pagination by cursor, get tweets after X tweet ID"""
+        cursor: Int
+    ): [Tweet]
+    """Get only tweets of an user that are not responses"""
+    indexUserTweets(
+        userId: Int!,
+        """Pagination by cursor, get tweets after X tweet ID"""
+        cursor: Int
+    ): [Tweet]
 }
 
 """Type used for authentication"""
