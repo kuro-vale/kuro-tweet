@@ -87,6 +87,11 @@ type UserQueries {
 
 """Tweet Queries"""
 type TweetQueries {
+    """Get recent tweets of users you are following"""
+    index(
+        """Pagination by cursor, get tweets after X tweet ID"""
+        cursor: Int
+    ): [Tweet]
     """Search tweets"""
     searchTweets(
         filter: FilterTweets!,

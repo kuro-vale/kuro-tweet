@@ -1,7 +1,34 @@
 import { TweetHelper } from "../tweet.helper.js";
 import { UserHelper } from "../../user/user.helper.js";
+import { GraphQLError } from "graphql/error/index.js";
+import { Helper } from "../../helper.js";
 
 export class TweetQueries {
+
+  static async index(_: any, { cursor }: any, { db, user }: any) {
+    if (user != null) {
+      let followingsIds = await db.follows.findMany({
+        select: {
+          followingId: true,
+        },
+        where: {
+          followerId: user.id,
+        },
+      });
+      followingsIds = followingsIds.map((i: any) => i.followingId);
+      let query = {
+        where: {
+          authorId: {
+            in: followingsIds,
+          },
+          deleted: null,
+        },
+      };
+      return TweetHelper.tweetCursorPaginator(db, cursor, query);
+    }
+    throw new GraphQLError(Helper.LoginMessage);
+  }
+
   static async query(_: any, { cursor, filter }: any, { db }: any) {
     filter = {
       where: {
@@ -205,6 +232,7 @@ export class TweetQueries {
             tweetId: tweetId,
           },
         },
+        deleted: null,
       },
     };
     return await UserHelper.userCursorPaginator(db, cursor, query);
@@ -218,6 +246,7 @@ export class TweetQueries {
             tweetId: tweetId,
           },
         },
+        deleted: null,
       },
     };
     return await UserHelper.userCursorPaginator(db, cursor, query);

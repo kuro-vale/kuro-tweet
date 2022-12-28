@@ -18,6 +18,7 @@ export const Resolvers = {
     followersYouMayKnow: UserQueries.queryFollowersYouMayKnow,
   },
   TweetQueries: {
+    index: TweetQueries.index,
     searchTweets: TweetQueries.query,
     tweetById: TweetQueries.tweetById,
     tweetComments: TweetQueries.getComments,
