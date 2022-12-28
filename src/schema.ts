@@ -161,6 +161,10 @@ type User {
     followers: Int
     """Amount of user following"""
     following: Int
+    """True if this user follows you"""
+    isFollowingYou: Boolean
+    """True if you are following this user"""
+    isFollowedByYou: Boolean
 }
 
 """The main type of this app LMAO"""
@@ -183,6 +187,10 @@ type Tweet {
     parentId: Int
     """Date of creation"""
     createdAt: Date
+    """True if you already hearted this tweet"""
+    isHeartedByYou: Boolean
+    """True if you already retweeted this tweet"""
+    isRetweetedByYou: Boolean
 }
 
 """Authentication payload"""
@@ -202,12 +210,12 @@ type CursorTweet {
 """Input to filter users"""
 input FilterUsers {
     """Filter users by username"""
-    username: String
+    username: String!
 }
 
 """Input to filter tweets"""
 input FilterTweets {
     """Filter tweets by content"""
-    body: String
+    body: String!
 }
 `;

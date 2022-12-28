@@ -57,6 +57,8 @@ export const Resolvers = {
     hearts: UserQueries.countHearts,
     followers: UserQueries.countFollowers,
     following: UserQueries.countFollowing,
+    isFollowingYou: UserQueries.isFollowingYou,
+    isFollowedByYou: UserQueries.isFollowedByYou,
   },
   Tweet: {
     comments: TweetQueries.countComments,
@@ -64,6 +66,8 @@ export const Resolvers = {
     hearts: TweetQueries.countHearts,
     parent: TweetQueries.getParent,
     author: TweetQueries.getAuthor,
+    isHeartedByYou: TweetQueries.isHeartedByYou,
+    isRetweetedByYou: TweetQueries.isRetweetedByYou,
   },
   Date: DateScalar,
 };

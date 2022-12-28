@@ -118,4 +118,30 @@ export class UserQueries {
       },
     });
   }
+
+  static async isFollowingYou(parent: any, __: any, { db, user }: any) {
+    if (user != null) {
+      const following = await db.follows.findFirst({
+        where: {
+          followerId: parent.id,
+          followingId: user.id,
+        },
+      });
+      if (following != null) return true;
+    }
+    return false;
+  }
+
+  static async isFollowedByYou(parent: any, __: any, { db, user }: any) {
+    if (user != null) {
+      const following = await db.follows.findFirst({
+        where: {
+          followerId: user.id,
+          followingId: parent.id,
+        },
+      });
+      if (following != null) return true;
+    }
+    return false;
+  }
 }

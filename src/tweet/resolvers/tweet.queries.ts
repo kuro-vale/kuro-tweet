@@ -295,4 +295,30 @@ export class TweetQueries {
       },
     });
   }
+
+  static async isHeartedByYou(parent: any, __: any, { db, user }: any) {
+    if (user != null) {
+      const hearted = await db.heart.findFirst({
+        where: {
+          tweetId: parent.id,
+          byId: user.id,
+        },
+      });
+      if (hearted != null) return true;
+    }
+    return false;
+  }
+
+  static async isRetweetedByYou(parent: any, __: any, { db, user }: any) {
+    if (user != null) {
+      const retweeted = await db.retweet.findFirst({
+        where: {
+          tweetId: parent.id,
+          byId: user.id,
+        },
+      });
+      if (retweeted != null) return true;
+    }
+    return false;
+  }
 }
