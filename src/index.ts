@@ -15,7 +15,7 @@ const server = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
+  listen: { port: parseInt(process.env["PORT"] || "4000") },
   context: async ({ req }) => {
     const token = req.headers.authorization || "";
     let user = null;
