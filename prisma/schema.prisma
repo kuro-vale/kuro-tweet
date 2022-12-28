@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-    id          Int             @id @default(autoincrement())
-    username    String          @unique
-    password    String
-    tweets      Tweet[]
-    hearts      Heart[]
-    retweets    Retweet[]
-    followedBy  Follows[]       @relation("following")
-    following   Follows[]       @relation("follower")
-    joined      DateTime        @default(now())
-    deleted     DateTime?
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  password   String
+  tweets     Tweet[]
+  hearts     Heart[]
+  retweets   Retweet[]
+  followedBy Follows[] @relation("following")
+  following  Follows[] @relation("follower")
+  joined     DateTime  @default(now())
+  deleted    DateTime?
 }
 
 model Follows {
@@ -30,41 +30,41 @@ model Follows {
 }
 
 model Tweet {
-    id              Int         @id @default(autoincrement())
-    body            String
+  id   Int    @id @default(autoincrement())
+  body String
 
-    retweetedBy     Retweet[]
-    heartBy         Heart[]
+  retweetedBy Retweet[]
+  heartBy     Heart[]
 
-    author          User        @relation(fields: [authorId], references: [id])
-    authorId        Int
-//  A tweet can have zero or ONE Parent, and a tweet can have zero or more Comments
-    parentId        Int?
-    parent          Tweet?      @relation("ParentComments", fields: [parentId], references: [id])
-    comments        Tweet[]     @relation("ParentComments")
+  author   User    @relation(fields: [authorId], references: [id])
+  authorId Int
+  //  A tweet can have zero or ONE Parent, and a tweet can have zero or more Comments
+  parentId Int?
+  parent   Tweet?  @relation("ParentComments", fields: [parentId], references: [id])
+  comments Tweet[] @relation("ParentComments")
 
-    createdAt       DateTime    @default(now())
-    deleted         DateTime?
+  createdAt DateTime  @default(now())
+  deleted   DateTime?
 }
 
 model Retweet {
-    id              Int         @default(autoincrement()) @unique
-    by              User        @relation(fields: [byId], references: [id])
-    byId            Int
-    tweet           Tweet       @relation(fields: [tweetId], references: [id])
-    tweetId         Int
-    retweetedAt     DateTime    @default(now())
+  id          Int      @unique @default(autoincrement())
+  by          User     @relation(fields: [byId], references: [id])
+  byId        Int
+  tweet       Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId     Int
+  retweetedAt DateTime @default(now())
 
-    @@id([byId, tweetId])
+  @@id([byId, tweetId])
 }
 
 model Heart {
-    id              Int         @default(autoincrement()) @unique
-    by          User        @relation(fields: [byId], references: [id])
-    byId        Int
-    tweet       Tweet       @relation(fields: [tweetId], references: [id])
-    tweetId     Int
-    createdAt   DateTime    @default(now())
+  id        Int      @unique @default(autoincrement())
+  by        User     @relation(fields: [byId], references: [id])
+  byId      Int
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   Int
+  createdAt DateTime @default(now())
 
-    @@id([byId, tweetId])
+  @@id([byId, tweetId])
 }
