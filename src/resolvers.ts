@@ -25,6 +25,8 @@ export const Resolvers = {
     indexUserTweets: TweetQueries.indexUserTweets,
     getUserRetweets: TweetQueries.getUserRetweets,
     getUserHearts: TweetQueries.getUserHearts,
+    getTweetsHearts: TweetQueries.getTweetsHearts,
+    getTweetsRetweets: TweetQueries.getTweetsRetweets,
   },
   Mutation: {
     Auth: () => "",

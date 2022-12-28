@@ -1,4 +1,5 @@
 import { TweetHelper } from "../tweet.helper.js";
+import { UserHelper } from "../../user/user.helper.js";
 
 export class TweetQueries {
   static async query(_: any, { cursor, filter }: any, { db }: any) {
@@ -194,6 +195,32 @@ export class TweetQueries {
       });
     }
     return response;
+  }
+
+  static async getTweetsRetweets(_: any, { cursor, tweetId }: any, { db }: any) {
+    let query = {
+      where: {
+        retweets: {
+          some: {
+            tweetId: tweetId,
+          },
+        },
+      },
+    };
+    return await UserHelper.userCursorPaginator(db, cursor, query);
+  }
+
+  static async getTweetsHearts(_: any, { cursor, tweetId }: any, { db }: any) {
+    let query = {
+      where: {
+        hearts: {
+          some: {
+            tweetId: tweetId,
+          },
+        },
+      },
+    };
+    return await UserHelper.userCursorPaginator(db, cursor, query);
   }
 
   static async getParent(parent: any, __: any, { db }: any) {
