@@ -114,6 +114,18 @@ type TweetQueries {
         """Pagination by cursor, get tweets after X tweet ID"""
         cursor: Int
     ): [Tweet]
+    """Get user's retweets"""
+    getUserRetweets(
+        userId: Int!,
+        """Pagination by cursor, get retweets after X retweet ID"""
+        cursor: Int
+    ): [Tweet]
+    """Get user's tweets hearted"""
+    getUserHearts(
+        userId: Int!,
+        """Pagination by cursor, get tweet after X tweet ID"""
+        cursor: Int
+    ): [Tweet]
 }
 
 """Type used for authentication"""

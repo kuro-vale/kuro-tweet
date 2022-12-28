@@ -48,6 +48,7 @@ model Tweet {
 }
 
 model Retweet {
+    id              Int         @default(autoincrement()) @unique
     by              User        @relation(fields: [byId], references: [id])
     byId            Int
     tweet           Tweet       @relation(fields: [tweetId], references: [id])
@@ -58,6 +59,7 @@ model Retweet {
 }
 
 model Heart {
+    id              Int         @default(autoincrement()) @unique
     by          User        @relation(fields: [byId], references: [id])
     byId        Int
     tweet       Tweet       @relation(fields: [tweetId], references: [id])

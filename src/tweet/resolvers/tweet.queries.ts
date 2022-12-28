@@ -96,6 +96,84 @@ export class TweetQueries {
     return await TweetHelper.tweetCursorPaginator(db, cursor, query);
   }
 
+  static async getUserRetweets(_: any, { cursor, userId }: any, { db }: any) {
+    let tweetsIds = [];
+    const query = {
+      where: {
+        byId: userId,
+      },
+      take: 10,
+      orderBy: {
+        id: "desc",
+      },
+    };
+    let retweets;
+    if (cursor == null) {
+      retweets = await db.retweet.findMany(query);
+    } else {
+      retweets = await db.retweet.findMany({
+        ...query,
+        skip: 1,
+        cursor: {
+          id: cursor,
+        },
+      });
+    }
+    for (let retweet of retweets) {
+      tweetsIds.push(retweet.tweetId);
+    }
+    return await db.tweet.findMany({
+      where: {
+        id: {
+          in: tweetsIds,
+        },
+        deleted: null,
+      },
+      include: {
+        author: true,
+      },
+    });
+  }
+
+  static async getUserHearts(_: any, { cursor, userId }: any, { db }: any) {
+    let tweetsIds = [];
+    const query = {
+      where: {
+        byId: userId,
+      },
+      take: 10,
+      orderBy: {
+        id: "desc",
+      },
+    };
+    let tweets;
+    if (cursor == null) {
+      tweets = await db.heart.findMany(query);
+    } else {
+      tweets = await db.heart.findMany({
+        ...query,
+        skip: 1,
+        cursor: {
+          id: cursor,
+        },
+      });
+    }
+    for (let tweet of tweets) {
+      tweetsIds.push(tweet.tweetId);
+    }
+    return await db.tweet.findMany({
+      where: {
+        id: {
+          in: tweetsIds,
+        },
+        deleted: null,
+      },
+      include: {
+        author: true,
+      },
+    });
+  }
+
   static async getParent(parent: any, __: any, { db }: any) {
     if (parent.parentId == null) return null;
     return await db.tweet.findFirst({

@@ -40,9 +40,6 @@ export class UserQueries {
           },
         },
       },
-      orderBy: {
-        id: "asc",
-      },
     };
     return UserHelper.userCursorPaginator(db, cursor, query);
   }
@@ -56,9 +53,6 @@ export class UserQueries {
             followerId: userId,
           },
         },
-      },
-      orderBy: {
-        id: "asc",
       },
     };
     return UserHelper.userCursorPaginator(db, cursor, query);
@@ -79,9 +73,6 @@ export class UserQueries {
               followerId: user.id,
             },
           },
-        },
-        orderBy: {
-          id: "asc",
         },
       };
       return UserHelper.userCursorPaginator(db, cursor, query);
