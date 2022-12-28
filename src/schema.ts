@@ -119,13 +119,13 @@ type TweetQueries {
         userId: Int!,
         """Pagination by cursor, get retweets after X retweet ID"""
         cursor: Int
-    ): [Tweet]
+    ): [CursorTweet]
     """Get user's tweets hearted"""
     getUserHearts(
         userId: Int!,
         """Pagination by cursor, get tweet after X tweet ID"""
         cursor: Int
-    ): [Tweet]
+    ): [CursorTweet]
 }
 
 """Type used for authentication"""
@@ -174,6 +174,12 @@ type AuthPayload {
     token: String!
     """Your user"""
     user: User!
+}
+
+"""Retweets and Hearts use a different Id for cursor pagination"""
+type CursorTweet {
+    tweet: Tweet
+    cursorId: Int
 }
 
 """Input to filter users"""

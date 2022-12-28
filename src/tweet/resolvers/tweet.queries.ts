@@ -122,7 +122,7 @@ export class TweetQueries {
     for (let retweet of retweets) {
       tweetsIds.push(retweet.tweetId);
     }
-    return await db.tweet.findMany({
+    let tweets = await db.tweet.findMany({
       where: {
         id: {
           in: tweetsIds,
@@ -132,7 +132,18 @@ export class TweetQueries {
       include: {
         author: true,
       },
+      orderBy: {
+        id: "desc",
+      },
     });
+    let response = [];
+    for (let i = 0; i < tweets.length; i++) {
+      response.push({
+        tweet: tweets[i],
+        cursorId: retweets[i].id,
+      });
+    }
+    return response;
   }
 
   static async getUserHearts(_: any, { cursor, userId }: any, { db }: any) {
@@ -161,7 +172,7 @@ export class TweetQueries {
     for (let tweet of tweets) {
       tweetsIds.push(tweet.tweetId);
     }
-    return await db.tweet.findMany({
+    let hearts = await db.tweet.findMany({
       where: {
         id: {
           in: tweetsIds,
@@ -171,7 +182,18 @@ export class TweetQueries {
       include: {
         author: true,
       },
+      orderBy: {
+        id: "desc",
+      },
     });
+    let response = [];
+    for (let i = 0; i < hearts.length; i++) {
+      response.push({
+        tweet: hearts[i],
+        cursorId: tweets[i].id,
+      });
+    }
+    return response;
   }
 
   static async getParent(parent: any, __: any, { db }: any) {
