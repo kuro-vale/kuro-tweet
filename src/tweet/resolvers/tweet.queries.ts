@@ -34,7 +34,6 @@ export class TweetQueries {
       where: {
         body: {
           contains: filter.body,
-          mode: "insensitive",
         },
         deleted: null,
       },
@@ -104,7 +103,6 @@ export class TweetQueries {
       where: {
         body: {
           contains: filter.body,
-          mode: "insensitive",
         },
         authorId: userId,
         deleted: null,

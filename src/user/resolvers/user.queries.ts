@@ -9,7 +9,6 @@ export class UserQueries {
       where: {
         username: {
           contains: filter.username,
-          mode: "insensitive",
         },
         deleted: null,
       },

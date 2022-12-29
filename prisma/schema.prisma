@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:../dev.db"
 }
 
 model User {
@@ -48,7 +48,7 @@ model Tweet {
 }
 
 model Retweet {
-  id          Int      @unique @default(autoincrement())
+  id          Int      @unique
   by          User     @relation(fields: [byId], references: [id])
   byId        Int
   tweet       Tweet    @relation(fields: [tweetId], references: [id])
@@ -59,7 +59,7 @@ model Retweet {
 }
 
 model Heart {
-  id        Int      @unique @default(autoincrement())
+  id        Int      @unique
   by        User     @relation(fields: [byId], references: [id])
   byId      Int
   tweet     Tweet    @relation(fields: [tweetId], references: [id])

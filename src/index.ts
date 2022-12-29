@@ -8,6 +8,20 @@ import depthLimit from "graphql-depth-limit";
 
 const prisma = new PrismaClient();
 
+prisma.$use(async (params: any, next: any) => {
+  if (params.model == "Retweet") {
+    if (params.action == "upsert") {
+      params.args.create.id = await prisma.retweet.count() + 1;
+    }
+  }
+  if (params.model == "Heart") {
+    if (params.action == "upsert") {
+      params.args.create.id = await prisma.heart.count() + 1;
+    }
+  }
+  return next(params);
+});
+
 const server = new ApolloServer({
   typeDefs: Schema,
   resolvers: Resolvers,
