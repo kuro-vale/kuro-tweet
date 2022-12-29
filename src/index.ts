@@ -12,6 +12,7 @@ const server = new ApolloServer({
   typeDefs: Schema,
   resolvers: Resolvers,
   validationRules: [depthLimit(4)],
+  includeStacktraceInErrorResponses: false,
 });
 
 const { url } = await startStandaloneServer(server, {
