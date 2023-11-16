@@ -11,12 +11,36 @@ const prisma = new PrismaClient();
 prisma.$use(async (params: any, next: any) => {
   if (params.model == "Retweet") {
     if (params.action == "upsert") {
-      params.args.create.id = await prisma.retweet.count() + 1;
+      const maxId = await prisma.retweet.findFirst({
+        select: {
+          id: true
+        },
+        orderBy: {
+          id: 'desc'
+        }
+      })
+      if (maxId) {
+        params.args.create.id = maxId.id + 1;
+      } else {
+        params.args.create.id = 1;
+      }
     }
   }
   if (params.model == "Heart") {
     if (params.action == "upsert") {
-      params.args.create.id = await prisma.heart.count() + 1;
+      const maxId = await prisma.heart.findFirst({
+        select: {
+          id: true
+        },
+        orderBy: {
+          id: 'desc'
+        }
+      })
+      if (maxId) {
+        params.args.create.id = maxId.id + 1;
+      } else {
+        params.args.create.id = 1;
+      }
     }
   }
   return next(params);
