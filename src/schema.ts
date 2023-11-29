@@ -63,8 +63,8 @@ type UserQueries {
     profile: User
     """Search 10 most followed users"""
     searchUsers(filter: FilterUsers!): [User]
-    """Get user by ID"""
-    userById(userId: Int!): User
+    """Get user by username"""
+    userByUsername(username: String!): User
     """Get users that follow X user"""
     followers(
         userId: Int!,

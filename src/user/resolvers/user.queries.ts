@@ -21,10 +21,10 @@ export class UserQueries {
     });
   }
 
-  static async getByID(_: any, { userId }: any, { db }: any) {
+  static async getByUsername(_: any, { username }: any, { db }: any) {
     return await db.user.findFirst({
       where: {
-        id: userId,
+        username: username,
         deleted: null,
       },
     });
