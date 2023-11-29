@@ -12,7 +12,7 @@ export const Resolvers = {
   UserQueries: {
     profile: UserQueries.profile,
     searchUsers: UserQueries.query,
-    userById: UserQueries.getByID,
+    userByUsername: UserQueries.getByUsername,
     followers: UserQueries.queryFollowers,
     following: UserQueries.queryFollowing,
     followersYouMayKnow: UserQueries.queryFollowersYouMayKnow,
