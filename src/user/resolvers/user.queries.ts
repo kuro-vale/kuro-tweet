@@ -90,6 +90,7 @@ export class UserQueries {
     return await db.tweet.count({
       where: {
         authorId: parent.id,
+        deleted: null,
       },
     });
   }
